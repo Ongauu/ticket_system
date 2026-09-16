@@ -1,0 +1,33 @@
+CREATE TABLE users(
+    id BIGSERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    account_non_locked BOOLEAN NOT NULL DEFAULT TRUE,
+    failed_attempts INTEGER NOT NULL DEFAULT 0,
+    lock_time TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+
+CREATE TABLE roles(
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(60) NOT NULL UNIQUE
+);
+
+
+CREATE TABLE user_roles(
+    user_id BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    role_id BIGINT NOT NULL REFERENCES roles (id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, role_id)
+);
+
+
+CREATE TABLE refresh_tokens(
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL UNIQUE REFERENCES users (id) ON DELETE CASCADE,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    expiry_date TIMESTAMPTZ NOT NULL,
+    revoked BOOLEAN NOT NULL DEFAULT FALSE
+);
