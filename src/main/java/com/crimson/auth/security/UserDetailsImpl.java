@@ -1,6 +1,6 @@
 package com.crimson.auth.security;
 
-import com.crimson.auth.entity.User;
+import com.crimson.auth.entity.userEntity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.crimson.auth.security;
 
-import com.crimson.auth.entity.User;
+import com.crimson.auth.entity.userEntity.User;
 import com.crimson.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

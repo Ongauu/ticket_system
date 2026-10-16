@@ -1,4 +1,4 @@
-package com.crimson.auth.entity;
+package com.crimson.auth.entity.userEntity;
 
 public enum RoleName {
     ROLE_USER,

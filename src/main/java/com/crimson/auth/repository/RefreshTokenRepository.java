@@ -1,7 +1,7 @@
 package com.crimson.auth.repository;
 
-import com.crimson.auth.entity.RefreshToken;
-import com.crimson.auth.entity.User;
+import com.crimson.auth.entity.userEntity.RefreshToken;
+import com.crimson.auth.entity.userEntity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

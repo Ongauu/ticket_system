@@ -1,4 +1,4 @@
-package com.crimson.auth.entity;
+package com.crimson.auth.entity.userEntity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

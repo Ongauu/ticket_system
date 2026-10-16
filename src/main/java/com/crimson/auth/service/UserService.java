@@ -2,7 +2,7 @@ package com.crimson.auth.service;
 
 import com.crimson.auth.dto.request.ChangePasswordRequest;
 import com.crimson.auth.dto.response.UserResponse;
-import com.crimson.auth.entity.User;
+import com.crimson.auth.entity.userEntity.User;
 import com.crimson.auth.exception.ResourceNotFoundException;
 import com.crimson.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
