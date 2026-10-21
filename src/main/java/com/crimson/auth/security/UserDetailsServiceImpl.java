@@ -1,7 +1,7 @@
 package com.crimson.auth.security;
 
 import com.crimson.auth.entity.userEntity.User;
-import com.crimson.auth.repository.UserRepository;
+import com.crimson.auth.repository.userrepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class
+UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override

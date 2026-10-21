@@ -3,7 +3,7 @@ package com.crimson.auth.service;
 import com.crimson.auth.entity.userEntity.RefreshToken;
 import com.crimson.auth.entity.userEntity.User;
 import com.crimson.auth.exception.TokenRefreshException;
-import com.crimson.auth.repository.RefreshTokenRepository;
+import com.crimson.auth.repository.userrepository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

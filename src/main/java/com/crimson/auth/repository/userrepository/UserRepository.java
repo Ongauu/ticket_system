@@ -1,4 +1,4 @@
-package com.crimson.auth.repository;
+package com.crimson.auth.repository.userrepository;
 
 import com.crimson.auth.entity.userEntity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

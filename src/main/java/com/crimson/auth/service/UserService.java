@@ -4,7 +4,7 @@ import com.crimson.auth.dto.request.ChangePasswordRequest;
 import com.crimson.auth.dto.response.UserResponse;
 import com.crimson.auth.entity.userEntity.User;
 import com.crimson.auth.exception.ResourceNotFoundException;
-import com.crimson.auth.repository.UserRepository;
+import com.crimson.auth.repository.userrepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;

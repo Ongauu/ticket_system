@@ -1,4 +1,4 @@
-package com.crimson.auth.repository;
+package com.crimson.auth.repository.userrepository;
 
 import com.crimson.auth.entity.userEntity.RefreshToken;
 import com.crimson.auth.entity.userEntity.User;
