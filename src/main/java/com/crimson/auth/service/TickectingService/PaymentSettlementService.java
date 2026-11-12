@@ -5,6 +5,7 @@ import com.crimson.auth.entity.ticket.PaymentStatus;
 import com.crimson.auth.entity.ticket.Reservation;
 import com.crimson.auth.entity.ticket.ReservationStatus;
 import com.crimson.auth.exception.TicketingException;
+import com.crimson.auth.payment.*;
 import com.crimson.auth.repository.ticketrepository.PaymentRepository;
 import com.crimson.auth.repository.ticketrepository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -66,12 +67,12 @@ public class PaymentSettlementService {
     private void succeed(Reservation r, Payment p) {
         PaymentStatus s = p.getStatus();
         if (s == PaymentStatus.SUCCEEDED || s == PaymentStatus.REFUND_PENDING || s == PaymentStatus.REFUNDED) {
+            return;
         }
         switch (r.getStatus()) {
             case CONFIRMED -> refundLater(p, "Reservation was already paid by another payment");
             case HELD, PAYMENT_PENDING -> confirm(r, p);
             case EXPIRED, CANCELLED -> {
-                // Payment landed after we released the stock: take it back if anyone left any.
                 if (inventory.tryReacquire(r.getId())) {
                     log.warn("Late payment {} re-acquired stock for {} reservation {}", p.getId(), r.getStatus(), r.getId());
                     confirm(r, p);

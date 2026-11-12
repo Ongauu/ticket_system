@@ -5,13 +5,19 @@ import com.crimson.auth.dto.response.PaymentResponse;
 import com.crimson.auth.entity.ticket.Payment;
 import com.crimson.auth.entity.ticket.PaymentStatus;
 import com.crimson.auth.entity.ticket.Reservation;
+import com.crimson.auth.entity.ticket.ReservationStatus;
 import com.crimson.auth.exception.TicketingException;
+import com.crimson.auth.payment.ChargeRequest;
+import com.crimson.auth.payment.ChargeResult;
+import com.crimson.auth.payment.PaymentGateway;
+import com.crimson.auth.payment.PaymentGatewayException;
 import com.crimson.auth.repository.ticketrepository.PaymentRepository;
 import com.crimson.auth.repository.ticketrepository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.Instant;
@@ -50,7 +56,6 @@ public class PaymentService {
     }
 
     private Payment initiate(Long userId, UUID reservationId, String key) {
-        // Reservation row lock serialises concurrent pay attempts (double click, two tabs, retries).
         Reservation r = reservations.findByIdForUpdate(reservationId)
                 .filter(x -> x.getUserId().equals(userId))
                 .orElseThrow(() -> TicketingException.notFound("Reservation not found"));
