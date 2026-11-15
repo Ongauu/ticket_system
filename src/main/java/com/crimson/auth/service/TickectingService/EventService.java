@@ -53,6 +53,16 @@ public class EventService {
         return EventResponse.of(event, created);
     }
 
+    @Transactional
+    public EventResponse publish(Long id){
+        Event event = events.findById(id).orElseThrow(() -> TicketingException.notFound("Event not found"));
+        if(event.getStatus() != EventStatus.DRAFT){
+            throw TicketingException.conflict("only DRAFT events can be published");
+        }
+        event.setStatus(EventStatus.PUBLISHED);
+        return EventResponse.of(event, tiers.findByEventIdOrderByIdAsc(id));
+    }
+
     @Transactional(readOnly = true)
     public PageResponse<EventResponse> listPublished(Pageable pageable){
         Page<Event> page = events.findByStatus(EventStatus.PUBLISHED, pageable);
