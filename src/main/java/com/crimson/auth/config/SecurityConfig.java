@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -39,17 +41,20 @@ public class SecurityConfig {
             "/api/auth/refresh-token",
             "/actuator/health",
             "/actuator/info",
-            "/"
+            "/",
+            //ticketing: payment providers calls this
+            "/api/webhooks/**"
     };
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, TicketingProperties ticketing, ObjectMapper objectMapper) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // stateless JWT API — no cookies/CSRF exposure
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/events", "/api/events/*").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/moderator/**").hasAnyRole("ADMIN", "MODERATOR")
                         .anyRequest().authenticated()
@@ -60,6 +65,7 @@ public class SecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new RateLimitFilter(ticketing.rateLimitPerMinute(), objectMapper), JwtAuthenticationFilter.class)
                 .headers(headers -> headers
                         .frameOptions(frame -> frame.deny())
                         .contentTypeOptions(contentType -> {})

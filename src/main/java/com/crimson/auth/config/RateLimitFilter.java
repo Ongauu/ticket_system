@@ -19,14 +19,14 @@ import java.time.Instant;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class RateLimiter extends OncePerRequestFilter {
+public class RateLimitFilter extends OncePerRequestFilter {
     private record Window(long minute, AtomicInteger count){}
 
     private final ConcurrentHashMap<String, Window> windows = new ConcurrentHashMap<>();
     private final int limitPerMinute;
     private final ObjectMapper objectMapper;
 
-    public RateLimiter(int limitPerMinute, ObjectMapper objectMapper){
+    public RateLimitFilter(int limitPerMinute, ObjectMapper objectMapper){
         this.limitPerMinute = limitPerMinute;
         this.objectMapper = objectMapper;
     }
